@@ -1,0 +1,49 @@
+<resources>
+
+    <string name="hwfw_app_name">HWFW</string>
+    <!--<string name="app_name">TimeHub_BaseProject</string>-->
+
+    <string name="thub_ok">확인</string>
+    <string name="thub_cancel">취소</string>
+    <string name="thub_login">로그인</string>
+    <string name="thub_auto_login">자동 로그인</string>
+    <string name="thub_logout">로그아웃</string>
+    <string name="thub_signup">회원가입</string>
+    <string name="thub_name">이름</string>
+    <string name="thub_pass">비밀번호</string>
+    <string name="thub_email">이메일</string>
+    <string name="thub_menu">메뉴</string>
+    <string name="thub_setting">설정</string>
+
+    <string name="thub_base_hint_email">이메일을 입력해주세요</string>
+    <string name="thub_base_hint_pw">비밀번호를 입력해주세요</string>
+    <string name="thub_base_hint_name">이름을 입력해주세요</string>
+
+    <string name="thub_hour1">시</string>
+    <string name="thub_hour2">시간</string>
+    <string name="thub_minute">분</string>
+
+    <string name="thub_select1">선택</string>
+    <string name="thub_select2">선택하기</string>
+    <string name="thub_select_all1">전체선택</string>
+    <string name="thub_select_all2">전체선택하기</string>
+    <string name="thub_all">전체</string>
+
+    <string name="thub_str_remove">삭제하기</string>
+    <string name="thub_str_play">재생하기</string>
+    <string name="thub_str_share">공유하기</string>
+    <string name="thub_str_replay">답변하기</string>
+    <string name="thub_str_notification">알림</string>
+    <string name="thub_str_alarm">알람</string>
+
+    <string name="thub_alert_dialog_blank">빈칸을 입력해주세요</string>
+    <string name="thub_alert_dialog_internet">인터넷 연결이 되어있지 않아 앱을 종료합니다.</string>
+    <string name="thub_alert_dialog_logout">로그아웃을 하시겠습니까?</string>
+    <string name="thub_alert_dialog_continue">정말 진행하시겠습니까?</string>
+    <string name="thub_alert_dialog_cancel">정말 취소하시겠습니까?</string>	
+    <string name="thub_alert_dialog_networking">서버와 통신중입니다...</string>
+
+    <string name="action_share">Share</string>
+    <string name="action_reply">Reply</string>
+
+</resources>

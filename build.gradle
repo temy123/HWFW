@@ -1,0 +1,33 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 17030701
+        versionName "0.0.0.2"
+    }
+    buildTypes {
+        release {
+            // Proguard 적용 빼놓았습니다
+            minifyEnabled false
+//            consumerProguardFile 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.+'
+    compile 'com.android.support:recyclerview-v7:25.+'
+    compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.facebook.android:facebook-android-sdk:4.9.0'
+    compile 'com.google.code.gson:gson:2.7'
+    compile project(':okhttp-3.6.0')
+}
