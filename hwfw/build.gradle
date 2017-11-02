@@ -2,12 +2,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.jakewharton.butterknife'
 
 ext {
     url = "https://github.com/temy123/HWFW.git"
     repoName = "hwfw"
     bitnaryUrl = "https://dl.bintray.com/temy123/hwfw"
-    libraryVersionName = "1.0.0"
+    libraryVersionName = "1.0.1-alpha7"
     libraryDescription = "HW FrameWork"
     packageName = "com.naver.temy123.baseproject.base"
 }
@@ -16,45 +17,45 @@ group = packageName
 version = libraryVersionName
 
 // Install
-//install {
-//    repositories.mavenInstaller {
-//        pom.project {
-//            name repoName
-//            description libraryDescription
-//            url url
-//            inceptionYear '2017' // release date
-//
-//            // gradle dependency
-//            // ex) compile 'tech.thdev:bintray-sample:0.0.1'
-//            packaging 'aar'
-//            groupId packageName // compile 'tech.thdev:
-//            artifactId repoName // :bintray-sample:
-//            version libraryVersionName // :0.0.1-alpha
-//
-//            licenses {
-//                license {
-//                    name 'The Apache Software License, Version 2.0'
-//                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//                    distribution 'repo'
-//                }
-//            }
-//
-//            scm { // Optional setting
-//                connection url
-//                developerConnection url
-//                url url
-//            }
-//
-//            developers { // Optional setting
-//                developer {
-//                    id 'temy123'
-//                    name 'hyunwoo'
-//                    email 'temy123@naver.com'
-//                }
-//            }
-//        }.writeTo("$buildDir/poms/pom-default.xml")
-//    }
-//}
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name repoName
+            description libraryDescription
+            url url
+            inceptionYear '2017' // release date
+
+            // gradle dependency
+            // ex) compile 'tech.thdev:bintray-sample:0.0.1'
+            packaging 'aar'
+            groupId packageName // compile 'tech.thdev:
+            artifactId repoName // :bintray-sample:
+            version libraryVersionName // :0.0.1-alpha
+
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+
+            scm { // Optional setting
+                connection url
+                developerConnection url
+                url url
+            }
+
+            developers { // Optional setting
+                developer {
+                    id 'temy123'
+                    name 'hyunwoo'
+                    email 'temy123@naver.com'
+                }
+            }
+        }.writeTo("$buildDir/poms/pom-default.xml")
+    }
+}
 
 // Bintray setting... and upload
 bintray {
@@ -87,7 +88,7 @@ bintray {
         // issueTrackerUrl = '' // Optional
 
 //        labels = ['aar', 'android', 'example'] // Optional
-//        publicDownloadNumbers = true
+        publicDownloadNumbers = true
 
         githubRepo = url // Optional Github repository
 //        githubReleaseNotesFile = rootProject.ext.githubReleaseNotesFile // Optional Github readme file
@@ -131,9 +132,9 @@ dependencies {
     compile 'com.android.support:support-v4:25.+'
     compile 'com.android.support:appcompat-v7:25.+'
     compile 'com.android.support:recyclerview-v7:25.+'
-    compile 'com.loopj.android:android-async-http:1.4.9'
-    compile 'com.facebook.android:facebook-android-sdk:4.9.0'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
-
+    compile project(':android-async-http-1.4.9')
+    compile project(':gson-2.8.2')
+    compile project(':okhttp-3.9.0')
+    compile project(':httpclient-4.4.1.2')
+    compile project(':okio-1.13.0')
 }

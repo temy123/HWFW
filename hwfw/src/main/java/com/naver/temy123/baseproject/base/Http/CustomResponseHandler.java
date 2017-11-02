@@ -4,37 +4,38 @@ import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.naver.temy123.baseproject.base.Utils.Comm_RtnKey;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
-import com.naver.temy123.baseproject.base.Utils.Comm_RtnKey;
 
 /**
- *  @Deprecated AsyncHttpClient 는 이제 사용하지않습니다 <br />
+ * @Deprecated AsyncHttpClient 는 이제 사용하지않습니다 <br />
  * Created by HW on 2015-09-03.
  */
 @Deprecated
 public abstract class CustomResponseHandler extends AsyncHttpResponseHandler {
 
     // 다시시도 ( 한번만 )
-    private boolean mBoolRetry = true ;
+    private boolean mBoolRetry = true;
     // 성공 이후 무시 해도 되는 스텝 여부
-    private boolean isOther = true ;
+    private boolean isOther = true;
     // 유저 커스텀 사용 여부
-    private boolean isCustom = false ;
+    private boolean isCustom = false;
 
-    private String mRtnKey ;
-    private String mRtnValue ;
-    private String mData ;
+    private String mRtnKey;
+    private String mRtnValue;
+    private String mData;
     private JSONObject mJsonObject;
     private ProgressDialog mProgressDialog;
-    private boolean isShowDialog ;
-    private Context mContext ;
+    private boolean isShowDialog;
+    private Context mContext;
 
     // 다이얼로그 안띄우기
-    public CustomResponseHandler() {}
+    public CustomResponseHandler() {
+    }
 
     // 다이얼로그 띄우기
     public CustomResponseHandler(Context context, boolean isShowDialog) {
@@ -73,54 +74,54 @@ public abstract class CustomResponseHandler extends AsyncHttpResponseHandler {
 
             // 리턴 값에 대해
             switch (mRtnKey) {
-                case Comm_RtnKey.CMOK :
+                case Comm_RtnKey.CMOK:
                     CMOK();
-                    break ;
-                case Comm_RtnKey.CMSE :
+                    break;
+                case Comm_RtnKey.CMSE:
                     CMSE();
-                    break ;
-                case Comm_RtnKey.DAOK :
+                    break;
+                case Comm_RtnKey.DAOK:
                     DAOK();
-                    break ;
-                case Comm_RtnKey.DANO :
+                    break;
+                case Comm_RtnKey.DANO:
                     DANO();
-                    break ;
-                case Comm_RtnKey.MBRS :
+                    break;
+                case Comm_RtnKey.MBRS:
                     MBRS();
-                    break ;
-                case Comm_RtnKey.MBRF :
+                    break;
+                case Comm_RtnKey.MBRF:
                     MBRF();
-                    break ;
-                case Comm_RtnKey.MBVD :
+                    break;
+                case Comm_RtnKey.MBVD:
                     MBVD();
-                    break ;
-                case Comm_RtnKey.MLOS :
+                    break;
+                case Comm_RtnKey.MLOS:
                     MLOS();
-                    break ;
-                case Comm_RtnKey.MLOF :
+                    break;
+                case Comm_RtnKey.MLOF:
                     MLOF();
-                    break ;
-                case Comm_RtnKey.MINO :
+                    break;
+                case Comm_RtnKey.MINO:
                     MINO();
-                    break ;
-                case Comm_RtnKey.MBFD :
+                    break;
+                case Comm_RtnKey.MBFD:
                     MBFD();
-                    break ;
-                case Comm_RtnKey.MBGD :
+                    break;
+                case Comm_RtnKey.MBGD:
                     MBGD();
-                    break ;
-                case Comm_RtnKey.MLGD :
+                    break;
+                case Comm_RtnKey.MLGD:
                     MLGD();
-                    break ;
-                case Comm_RtnKey.MLFD :
+                    break;
+                case Comm_RtnKey.MLFD:
                     MLFD();
-                    break ;
-                case Comm_RtnKey.PWRS :
+                    break;
+                case Comm_RtnKey.PWRS:
                     PWRS();
-                    break ;
-                case Comm_RtnKey.PWRF :
+                    break;
+                case Comm_RtnKey.PWRF:
                     PWRF();
-                    break ;
+                    break;
             }
 
             // 항상 실행되는 함수
@@ -149,7 +150,7 @@ public abstract class CustomResponseHandler extends AsyncHttpResponseHandler {
     /*
         실패시 다시시도가 가능한 상태인지 체크해줌
      */
-    public boolean canRetry ( ) {
+    public boolean canRetry() {
         if (isRetry()) {
             setRetry(false);
             return true;
@@ -159,27 +160,27 @@ public abstract class CustomResponseHandler extends AsyncHttpResponseHandler {
     }
 
     /**
-     *  리턴 값에 따른 콜백
+     * 리턴 값에 따른 콜백
      */
 
     /*
         DEFAULT : 항상 실행 되는 함수
      */
-    protected void DEFAULT ( ) {
+    protected void DEFAULT() {
 
     }
 
     /*
         CUSTOM : 사용자가 임의로 호출 여부를 결정 가능 한 함수
      */
-    protected void CUSTOM ( ) {
+    protected void CUSTOM() {
 
     }
 
     /*
         OTHER : 사용자가 임의로 무시 여부 결정 가능 한 함수
      */
-    protected void OTHER ( ) {
+    protected void OTHER() {
 
     }
 
@@ -187,107 +188,123 @@ public abstract class CustomResponseHandler extends AsyncHttpResponseHandler {
         RTNKEY : CMOK
         공통코드 : 정상적으로 처리되었습니다.
      */
-    protected void CMOK ( ) { }
+    protected void CMOK() {
+    }
 
     /*
         RTNKEY : CMSE
         공통코드 : 서버 에러 발생
      */
-    protected void CMSE ( ) { }
+    protected void CMSE() {
+    }
 
     /*
         RTNKEY : DAOK
         공통코드 : 데이터 있습니다.
      */
-    protected void DAOK ( ) { }
+    protected void DAOK() {
+    }
 
     /*
         RTNKEY : DANO
         공통코드 : 데이터 없습니다.
      */
-    protected void DANO ( ) { }
+    protected void DANO() {
+    }
 
     /*
         RTNKEY : MBRS
         회원가입 성공
      */
-    protected void MBRS ( ) { }
+    protected void MBRS() {
+    }
 
     /*
         RTNKEY : MBRF
         회원가입 실패
      */
-    protected void MBRF ( ) { }
+    protected void MBRF() {
+    }
 
     /*
         RTNKEY : MBVD
         이미 회원가입된 이메일 주소입니다.
      */
-    protected void MBVD ( ) { }
+    protected void MBVD() {
+    }
 
     /*
         RTNKEY : MLOS
         로그인 성공
      */
-    protected void MLOS ( ) { }
+    protected void MLOS() {
+    }
 
     /*
         RTNKEY : MLOF
         로그인 실패
      */
-    protected void MLOF ( ) { }
+    protected void MLOF() {
+    }
 
     /*
         RTNKEY : MINO
         권한이 존재하지 않습니다
      */
-    protected void MINO ( ) { }
+    protected void MINO() {
+    }
 
     /*
         RTNKEY : MBFD
         해당 아이디는 이미 Facebook 계정으로 회원가입 되어 있습니다.
      */
-    protected void MBFD ( ) { }
+    protected void MBFD() {
+    }
 
     /*
         RTNKEY : MBGD
         해당 아이디는 이미 Google 계정으로 회원가입 되어 있습니다.
      */
-    protected void MBGD ( ) { }
+    protected void MBGD() {
+    }
 
     /*
         RTNKEY : MLGD
         이미 Google 을 통해 가입된 이메일 계정이 있습니다.
      */
-    protected void MLGD ( ) { }
+    protected void MLGD() {
+    }
 
     /*
         RTNKEY : MLFD
         이미 Facebook 을 통해 가입된 이메일 계정이 있습니다.
      */
-    protected void MLFD ( ) { }
+    protected void MLFD() {
+    }
 
     /*
         RTNKEY : PWRS
         이메일 요청 성공
      */
-    protected void PWRS ( ) { }
+    protected void PWRS() {
+    }
 
     /*
         RTNKEY : PWRF
         이메일 요청 실패
      */
-    protected void PWRF ( ) { }
+    protected void PWRF() {
+    }
 
     /*
         무시
      */
-    protected void ignoreOther ( ) {
+    protected void ignoreOther() {
         this.isOther = false;
     }
 
     /**
-     *  Getters / Setters
+     * Getters / Setters
      */
     public String getRtnKey() {
         return mRtnKey;
@@ -333,7 +350,7 @@ public abstract class CustomResponseHandler extends AsyncHttpResponseHandler {
         return isCustom;
     }
 
-    public void callCustom( ) {
+    public void callCustom() {
         this.isCustom = true;
     }
 

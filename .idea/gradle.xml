@@ -8,7 +8,12 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/android-async-http-1.4.9" />
+            <option value="$PROJECT_DIR$/gson-2.8.2" />
+            <option value="$PROJECT_DIR$/httpclient-4.4.1.2" />
+            <option value="$PROJECT_DIR$/hwfw" />
+            <option value="$PROJECT_DIR$/okhttp-3.9.0" />
+            <option value="$PROJECT_DIR$/okio-1.13.0" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
