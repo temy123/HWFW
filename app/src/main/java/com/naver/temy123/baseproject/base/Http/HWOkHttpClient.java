@@ -4,18 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.naver.temy123.baseproject.base.Utils.HWException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
-import cz.msebera.android.httpclient.NameValuePair;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -64,9 +67,9 @@ public class HWOkHttpClient {
 
     public HWOkHttpClient(Context context) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(5, TimeUnit.SECONDS);
-        builder.readTimeout(5, TimeUnit.SECONDS);
-        builder.writeTimeout(5, TimeUnit.SECONDS);
+        builder.connectTimeout(10, TimeUnit.SECONDS);
+        builder.readTimeout(10, TimeUnit.SECONDS);
+        builder.writeTimeout(10, TimeUnit.SECONDS);
         this.okHttpClient = builder.build();
         this.context = context;
     }
@@ -105,10 +108,21 @@ public class HWOkHttpClient {
      * @return
      */
     private Request.Builder generateHeaders(Request.Builder builder, HWOkHttpParams headers) {
-        for (NameValuePair header : headers) {
-            String name = header.getName();
-            String value = header.getValue();
-            builder.addHeader(name, value);
+        for (HWOkHttpNameValuePair header : headers) {
+            String key = header.getKey();
+            Object value = header.getValue();
+
+            if (value instanceof String) {
+                String newValue = (String) value;
+                if (!TextUtils.isEmpty(newValue)) {
+                    if (key.length() > 0 &&
+                            newValue.length() > 0) {
+                        builder.addHeader(key, newValue);
+                    }
+                }
+            } else {
+                Log.d("HWOkHttpClient", "-- Doesn't support this parameter types.");
+            }
         }
         return builder;
     }
@@ -116,8 +130,6 @@ public class HWOkHttpClient {
     public void request(int httpType, String url, HWOkHttpParams params, @Nullable HWOkHttpCallBack callBack) {
         // todo : Taja에서 파라메터는 header에 넣지 않으므로 수정하였습니다.
         request(httpType, url, params, new HWOkHttpParams(), callBack);
-//        request(httpType, url, new HWOkHttpParams(),params , callBack);
-
     }
 
     @Nullable
@@ -149,6 +161,7 @@ public class HWOkHttpClient {
         for (String segment : uri.getPathSegments()) {
             httpUrlBuilder.addPathSegment(segment);
         }
+
         return httpUrlBuilder;
     }
 
@@ -237,15 +250,20 @@ public class HWOkHttpClient {
      * @return OkHttpClient 용 HttpUrl
      */
     private HttpUrl.Builder generateParams(HWOkHttpParams params, HttpUrl.Builder httpUrlBuilder) {
-        for (NameValuePair param : params) {
-            String key = param.getName();
-            String value = param.getValue();
+        for (HWOkHttpNameValuePair param : params) {
+            String key = param.getKey();
+            Object value = param.getValue();
 
-            if (!TextUtils.isEmpty(value)) {
-                if (key.length() > 0 &&
-                        value.length() > 0) {
-                    httpUrlBuilder.addEncodedQueryParameter(key, value);
+            if (value instanceof String) {
+                String newValue = (String) value;
+                if (!TextUtils.isEmpty(newValue)) {
+                    if (key.length() > 0 &&
+                            newValue.length() > 0) {
+                        httpUrlBuilder.addEncodedQueryParameter(key, newValue);
+                    }
                 }
+            } else {
+                Log.d("HWOkHttpClient", "-- Doesn't support this parameter types.");
             }
         }
 
@@ -259,32 +277,36 @@ public class HWOkHttpClient {
      * @param params 파라미터 집합
      * @return OkHttpClient 용 RequestBody
      */
-//    private RequestBody generateParams(HWOkHttpParams params, int type) {
-//
-//    }
-//
-//    private RequestBody generateParams(HWOkHttpParams params, int type, ) {
-//        switch (type) {
-//            case HWHttpType.HTTP_TYPE_GET:
-//                break;
-//            case HWHttpType.HTTP_TYPE_POST:
-//                break;
-//            case HWHttpType.HTTP_TYPE_PATCH:
-//                break;
-//        }
-//    }
     private RequestBody generateParams(HWOkHttpParams params) {
-        FormBody.Builder builder = new FormBody.Builder();
-//        MultipartBody.Builder builder = new MultipartBody.Builder()
-//                .setType(MultipartBody.FORM)
-//                .addFormDataPart("", "");
+        // 파라미터가 없는 경우
+        if (params.size() <= 0) {
+            return new FormBody.Builder().build();
+        }
 
-        for (NameValuePair param : params) {
-            String key = param.getName();
-            String value = param.getValue();
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+        builder.addFormDataPart("", "");
 
-            if (!TextUtils.isEmpty(value)) {
-                builder.addEncoded(key, value);
+        for (HWOkHttpNameValuePair param : params) {
+            String key = param.getKey();
+            Object value = param.getValue();
+
+            // 단순 String 타입 추가
+            if (value instanceof String) {
+                String newValue = (String) value;
+                if (!TextUtils.isEmpty(newValue)) {
+                    builder.addFormDataPart(key, newValue);
+                }
+            }
+            // File 타입 추가
+            else if (value instanceof File) {
+                File file = (File) value;
+                int extensionIndex = file.getName().lastIndexOf(".");
+                String fileExtension = file.getName().substring(extensionIndex + 1);
+
+                MediaType mediaType = MediaType.parse(HWOkHttpMimeType.getMimeType(fileExtension));
+                builder.addFormDataPart(key, file.getName()
+                        , RequestBody.create(mediaType, file));
             }
         }
 

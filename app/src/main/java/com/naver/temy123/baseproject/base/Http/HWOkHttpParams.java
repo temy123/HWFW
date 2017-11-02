@@ -2,23 +2,36 @@ package com.naver.temy123.baseproject.base.Http;
 
 import android.text.TextUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import cz.msebera.android.httpclient.NameValuePair;
-import cz.msebera.android.httpclient.message.BasicNameValuePair;
-
 /**
- * Created by lhw on 2017. 4. 26..
+ * HW Ok Http Params
+ * <p>
+ * HWOkHttpClient 에 기본이 되는 파라미터 정의 모델 입니다
+ * <p>
+ * Header , Body 에 사용 됩니다
  */
 
-public class HWOkHttpParams implements Iterable<NameValuePair> {
+public class HWOkHttpParams implements Iterable<HWOkHttpNameValuePair> {
 
-    private ArrayList<NameValuePair> params = new ArrayList();
+    public static final int TYPE_JSON = 1;
+    public static final int TYPE_FORM = 0;
+
+    private ArrayList<HWOkHttpNameValuePair> params = new ArrayList();
+    private int paramsType = TYPE_FORM;
+
+    public HWOkHttpParams() {
+    }
+
+    public HWOkHttpParams(int paramsType) {
+        this.paramsType = paramsType;
+    }
 
     public boolean hasParam(String key) {
-        for (NameValuePair param : params) {
-            if (TextUtils.equals(param.getName(), key)) {
+        for (HWOkHttpNameValuePair param : params) {
+            if (TextUtils.equals(param.getKey(), key)) {
                 return true;
             }
         }
@@ -26,45 +39,54 @@ public class HWOkHttpParams implements Iterable<NameValuePair> {
     }
 
     public HWOkHttpParams add(String key, String value) {
-        NameValuePair param = new BasicNameValuePair(key, value);
+        HWOkHttpNameValuePair param = new HWOkHttpNameValuePair(key, value);
         params.add(param);
         return this;
     }
 
-    public HWOkHttpParams add(NameValuePair param) {
+    public HWOkHttpParams add(String key, File value) {
+        HWOkHttpNameValuePair param = new HWOkHttpNameValuePair(key, value);
+        params.add(param);
+        return this;
+    }
+
+    public HWOkHttpParams add(HWOkHttpNameValuePair param) {
         params.add(param);
         return this;
     }
 
     public HWOkHttpParams append(int position, String key, String value) {
-        NameValuePair param = new BasicNameValuePair(key, value);
+        HWOkHttpNameValuePair param = new HWOkHttpNameValuePair(key, value);
         params.add(position, param);
         return this;
     }
 
-    public HWOkHttpParams append(int position, NameValuePair param) {
+    public HWOkHttpParams append(int position, HWOkHttpNameValuePair param) {
         params.add(position, param);
         return this;
     }
 
     public HWOkHttpParams remove(String key) {
-        for (NameValuePair param : params) {
-            if (TextUtils.equals(param.getName(), key)) {
+        for (HWOkHttpNameValuePair param : params) {
+            if (TextUtils.equals(param.getKey(), key)) {
                 params.remove(param);
             }
         }
         return this;
     }
 
-    public HWOkHttpParams remove(NameValuePair param) {
+    public HWOkHttpParams remove(HWOkHttpNameValuePair param) {
         params.remove(param);
         return this;
     }
 
+    public int size() {
+        return params.size();
+    }
 
     @Override
     public Iterator iterator() {
-        Iterator i = new Iterator<NameValuePair>() {
+        Iterator i = new Iterator() {
             int seq = 0;
 
             @Override
@@ -73,7 +95,7 @@ public class HWOkHttpParams implements Iterable<NameValuePair> {
             }
 
             @Override
-            public NameValuePair next() {
+            public HWOkHttpNameValuePair next() {
                 return params.get(seq++);
             }
 

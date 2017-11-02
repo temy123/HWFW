@@ -1,13 +1,117 @@
+//apply plugin: 'com.android.application'
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+ext {
+    url = "https://github.com/temy123/HWFW.git"
+    repoName = "hwfw"
+    libraryVersionName = "1.0.0"
+    libraryDescription = "HW FrameWork"
+    packageName = "com.naver.temy123.baseproject.base"
+}
+
+group = packageName
+version = libraryVersionName
+
+// Install
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name repoName
+            description libraryDescription
+            url url
+            inceptionYear '2017' // release date
+
+            // gradle dependency
+            // ex) compile 'tech.thdev:bintray-sample:0.0.1'
+            packaging 'aar'
+            groupId packageName // compile 'tech.thdev:
+            artifactId repoName // :bintray-sample:
+            version libraryVersionName // :0.0.1-alpha
+
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+
+            scm { // Optional setting
+                connection url
+                developerConnection url
+                url url
+            }
+
+            developers { // Optional setting
+                developer {
+                    id 'temy123'
+                    name 'hyunwoo'
+                    email 'temy123@naver.com'
+                }
+            }
+        }.writeTo("$buildDir/poms/pom-default.xml")
+    }
+}
+
+// Bintray setting... and upload
+bintray {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+
+
+    def my_bitnary_user = properties.getProperty('my.bitnary_user', null)
+    def my_bitnary_key = properties.getProperty('my.bitnary_key', null)
+
+    user = my_bitnary_user
+    key = my_bitnary_key
+
+//    publications = ['mavenJava']  // When uploading Maven-based publication files
+    configurations = ['archives'] // When uploading configuration files
+
+    publish = true // [Default: false] Whether version should be auto published after an upload
+
+    pkg {
+        repo = repoName // Repository name (Created in the repository Bintray site)
+        name = packageName// module name
+        userOrg = user
+        // An optional organization name when the repo belongs to one of the user's orgs
+        desc = 'Bintray sample library' // Optional
+        licenses = ['Apache-2.0']
+
+        vcsUrl = url
+        websiteUrl = url
+        // issueTrackerUrl = '' // Optional
+
+        labels = ['aar', 'android', 'example'] // Optional
+        publicDownloadNumbers = true
+
+        githubRepo = url // Optional Github repository
+//        githubReleaseNotesFile = rootProject.ext.githubReleaseNotesFile // Optional Github readme file
+
+        version {
+            name = libraryVersionName // The name of your library project
+            desc = libraryDescription // Optional - Version-specific description'
+            released = new Date()
+            // Optional - Date of the version release. 2 possible values: date in the format of 'yyyy-MM-dd'T'HH:mm:ss.SSSZZ' OR a java.util.Date instance
+            vcsTag = libraryVersionName
+        }
+    }
+}
+// Bintray setting end
+
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     defaultConfig {
+//        applicationId "com.naver.temy123.baseproject"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 17070301
-        versionName "0.0.0.3"
+        versionName libraryVersionName
     }
     buildTypes {
         release {
