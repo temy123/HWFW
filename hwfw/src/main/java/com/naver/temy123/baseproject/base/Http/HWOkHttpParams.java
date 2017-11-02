@@ -2,6 +2,9 @@ package com.naver.temy123.baseproject.base.Http;
 
 import android.text.TextUtils;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,12 +24,23 @@ public class HWOkHttpParams implements Iterable<HWOkHttpNameValuePair> {
 
     private ArrayList<HWOkHttpNameValuePair> params = new ArrayList();
     private int paramsType = TYPE_FORM;
+    private Object pendingJson; // Can put JSONArray or JSONObject type.
 
     public HWOkHttpParams() {
     }
 
     public HWOkHttpParams(int paramsType) {
         this.paramsType = paramsType;
+    }
+
+    public HWOkHttpParams(JSONObject jsonObject) {
+        paramsType = TYPE_JSON;
+        pendingJson = jsonObject;
+    }
+
+    public HWOkHttpParams(JSONArray jsonArray) {
+        paramsType = TYPE_JSON;
+        pendingJson = jsonArray;
     }
 
     public boolean hasParam(String key) {
@@ -78,6 +92,22 @@ public class HWOkHttpParams implements Iterable<HWOkHttpNameValuePair> {
     public HWOkHttpParams remove(HWOkHttpNameValuePair param) {
         params.remove(param);
         return this;
+    }
+
+    public int getParamsType() {
+        return paramsType;
+    }
+
+    public void setParamsType(int paramsType) {
+        this.paramsType = paramsType;
+    }
+
+    public Object getPendingJson() {
+        return pendingJson;
+    }
+
+    public void setPendingJson(Object pendingJson) {
+        this.pendingJson = pendingJson;
     }
 
     public int size() {

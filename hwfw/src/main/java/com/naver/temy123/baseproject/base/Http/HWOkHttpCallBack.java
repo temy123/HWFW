@@ -18,7 +18,7 @@ import okhttp3.Response;
  * Created by lhw on 2017. 3. 6..
  */
 
-public class HWOkHttpCallBack implements Callback {
+public abstract class HWOkHttpCallBack implements Callback {
 
     private Context context;
     private Handler handler;
@@ -32,7 +32,6 @@ public class HWOkHttpCallBack implements Callback {
         this.context = context;
         this.requestCode = requestCode;
     }
-
 
     @Override
     public void onResponse(final Call call, final Response response) {
@@ -51,15 +50,22 @@ public class HWOkHttpCallBack implements Callback {
 
         final String data = body;
         final String message = msg;
+        final int statusCode = response.code();
 
-        // Network Thread
-        onNetworkResponsed(call, response, body);
+        final Intent intent = generateIntent(call, body, message, statusCode);
+
+        // Background thread
+        onNetworkResponsed(call,
+                intent,
+                response,
+                body,
+                statusCode);
 
         // UI Thread
         handler.post(new Runnable() {
             @Override
             public void run() {
-                onUIResponsed(call, data, message);
+                onUIResponsed(call, intent, data, message, statusCode);
             }
         });
     }
@@ -75,32 +81,16 @@ public class HWOkHttpCallBack implements Callback {
      * @param response
      * @param body
      */
-    public void onNetworkResponsed(Call call, Response response, String body) {
+    public abstract void onNetworkResponsed(Call call, Intent intent, Response response, String body, int status);
 
-    }
-
-    public void onUIResponsed(Call call, String body, String message) {
-        // Receiver 등록
-        sendBroadcast(call, body, message);
-    }
+    public abstract void onUIResponsed(Call call, Intent intent, String body, String message, int status);
 
     private void printLogCall(Call call) {
         Request request = call.request();
         Log.d("HWOkHttpCallBack", "-- " + request);
-
-//        String url = request.url().url().toString();
-//        String parameter = request.url().query();
-//        String method = request.method();
-//        String body = request.toString()
     }
 
-    private void sendBroadcast(Call call, String body, String message) {
-        Intent intent = generateIntent(call, body, message);
-        intent.setAction(HW_Params.HW_NETWORK_ACTION);
-        context.sendBroadcast(intent);
-    }
-
-    private Intent generateIntent (Call call, String body, String message) {
+    private Intent generateIntent(Call call, String body, String message, int code) {
         Intent intent = new Intent();
 
         String method = call.request().method();
@@ -113,6 +103,7 @@ public class HWOkHttpCallBack implements Callback {
         intent.putExtra(HW_Params.HW_NETWORK_EXTRA_REQ, requestCode);
         intent.putExtra(HW_Params.HW_NETWORK_EXTRA_BODY, body);
         intent.putExtra(HW_Params.HW_NETWORK_EXTRA_MESSAGE, message);
+        intent.putExtra(HW_Params.HW_NETWORK_EXTRA_STATUS, code);
 
         return intent;
     }
@@ -123,7 +114,7 @@ public class HWOkHttpCallBack implements Callback {
         printLogCall(call);
 
         // Intent 정보 담기
-        final Intent intent = generateIntent(call, null, null);
+        final Intent intent = generateIntent(call, null, null, -1);
 
         handler = new Handler(context.getMainLooper());
         handler.post(new Runnable() {

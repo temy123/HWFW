@@ -1,23 +1,15 @@
 package com.naver.temy123.baseproject.base.Widgets;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.naver.temy123.baseproject.base.Interface.OnPermissionListener;
-import com.naver.temy123.baseproject.base.Utils.HW_Params;
 import com.naver.temy123.baseproject.base.Utils.PermissionHelper;
 
 import java.util.ArrayList;
@@ -27,68 +19,7 @@ import java.util.ArrayList;
  */
 public class BaseActivity extends AppCompatActivity {
 
-    private boolean isRegisteredReceiver = false;
-
     private OnPermissionListener onPermissionListener;
-    private BroadcastReceiver receiverNetwork = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            onNetworkResponsed(intent);
-        }
-    };
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        registerNetwork();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        unregisterNetwork();
-    }
-
-    /**
-     * Network Callback
-     *
-     * @param intent
-     */
-    protected void onNetworkResponsed(Intent intent) {
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        registerNetwork();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        unregisterNetwork();
-    }
-
-    private void registerNetwork() {
-        // Receiver 등록이 안되어있을때에만 등록하도록 수정
-        if (!isRegisteredReceiver) {
-            IntentFilter filter = new IntentFilter(HW_Params.HW_NETWORK_ACTION);
-            registerReceiver(receiverNetwork, filter);
-        }
-    }
-
-    private void unregisterNetwork() {
-        try {
-            unregisterReceiver(receiverNetwork);
-        } catch (Exception e) {
-            Log.e("BaseActivity", "On Error unregisterNetwork()");
-        }
-    }
 
     /**
      * 권한 요청하기

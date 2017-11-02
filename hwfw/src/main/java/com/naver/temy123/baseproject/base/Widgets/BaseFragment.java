@@ -1,19 +1,12 @@
 package com.naver.temy123.baseproject.base.Widgets;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.naver.temy123.baseproject.base.Utils.HW_Params;
 
 /**
  * 　　　　　$ ================================== $
@@ -21,55 +14,6 @@ import com.naver.temy123.baseproject.base.Utils.HW_Params;
  * 　　　　　$ ================================== $
  */
 public abstract class BaseFragment extends Fragment {
-
-    private boolean isRegisteredReceiver = false;
-
-    public BroadcastReceiver receiverNetwork = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            onNetworkResponsed(intent);
-        }
-    };
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        registerNetwork();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        unregisterNetwork();
-    }
-
-    private void registerNetwork() {
-        Log.d("BaseFragment", "registerNetwork");
-        // Receiver 등록이 안되어있을때에만 등록하도록 수정
-        if (!isRegisteredReceiver) {
-            IntentFilter filter = new IntentFilter(HW_Params.HW_NETWORK_ACTION);
-            getActivity().registerReceiver(receiverNetwork, filter);
-        }
-    }
-
-    private void unregisterNetwork() {
-        try {
-            getActivity().unregisterReceiver(receiverNetwork);
-        } catch (Exception e) {
-            Log.e("BaseFragment", "On Error unregisterNetwork()");
-        }
-    }
-
-    /**
-     * Network Callback
-     *
-     * @param intent
-     */
-    protected void onNetworkResponsed(Intent intent) {
-        Log.d("BaseFragment", "onNetworkResponsed: " + intent.getExtras().toString());
-    }
 
     /**
      * replaceFragment() 를 사용할것 [ 같은 기능 ]
@@ -161,10 +105,6 @@ public abstract class BaseFragment extends Fragment {
         ft.commit();
     }
 
-    @Nullable
-    @Override
-    public abstract View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -183,4 +123,7 @@ public abstract class BaseFragment extends Fragment {
     public void onPageChanged(boolean isShow) {
     }
 
+    @Nullable
+    @Override
+    public abstract View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
 }

@@ -8,6 +8,9 @@ import android.util.Log;
 
 import com.naver.temy123.baseproject.base.Utils.HWException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -204,12 +207,14 @@ public class HWOkHttpClient {
             //  GET
             // ********
             case HWHttpType.HTTP_TYPE_GET:
-                requestBuilder.get();
                 // todo : url 을 다시 재정의 하지 않아서 추가하였습니다.
                 httpUrlBuilder = generateParams(params, httpUrlBuilder);
                 httpUrl = httpUrlBuilder.build();
-                requestBuilder.url(httpUrl);
-                requestBuilder = generateHeaders(requestBuilder, headers);
+
+                requestBuilder =
+                        generateHeaders(requestBuilder, headers)
+                                .url(httpUrl)
+                                .get();
                 break;
 
             // ********
@@ -218,8 +223,9 @@ public class HWOkHttpClient {
             case HWHttpType.HTTP_TYPE_POST:
                 body = generateParams(params);
 //                requestBuilder.method("POST", RequestBody.create(null, new byte[0]));
-                requestBuilder.post(body);
-                requestBuilder = generateHeaders(requestBuilder, headers);
+                requestBuilder =
+                        generateHeaders(requestBuilder, headers)
+                                .post(body);
                 break;
 
             // ********
@@ -227,8 +233,26 @@ public class HWOkHttpClient {
             // ********
             case HWHttpType.HTTP_TYPE_PATCH:
                 body = generateParams(params);
-                requestBuilder.patch(body);
-                requestBuilder = generateHeaders(requestBuilder, headers);
+                requestBuilder = generateHeaders(requestBuilder, headers)
+                        .patch(body);
+                break;
+
+            // ********
+            //  DELETE
+            // ********
+            case HWHttpType.HTTP_TYPE_DELETE:
+                body = generateParams(params);
+                requestBuilder = generateHeaders(requestBuilder, headers)
+                        .delete(body);
+                break;
+
+            // ********
+            //  PUT
+            // ********
+            case HWHttpType.HTTP_TYPE_PUT:
+                body = generateParams(params);
+                requestBuilder = generateHeaders(requestBuilder, headers)
+                        .put(body);
                 break;
 
             default:
@@ -272,7 +296,7 @@ public class HWOkHttpClient {
 
     /**
      * 파라미터 뽑아내기<br />
-     * POST 용<br />
+     * GET 이외의 Form, JSON Type 용<br />
      *
      * @param params 파라미터 집합
      * @return OkHttpClient 용 RequestBody
@@ -283,34 +307,65 @@ public class HWOkHttpClient {
             return new FormBody.Builder().build();
         }
 
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-        builder.setType(MultipartBody.FORM);
-        builder.addFormDataPart("", "");
+        RequestBody body = null;
+        int paramsType = params.getParamsType();
 
-        for (HWOkHttpNameValuePair param : params) {
-            String key = param.getKey();
-            Object value = param.getValue();
+        // Type == Form
+        if (paramsType == HWOkHttpParams.TYPE_FORM) {
 
-            // 단순 String 타입 추가
-            if (value instanceof String) {
-                String newValue = (String) value;
-                if (!TextUtils.isEmpty(newValue)) {
-                    builder.addFormDataPart(key, newValue);
+            MultipartBody.Builder builder = new MultipartBody.Builder();
+            builder.setType(MultipartBody.FORM);
+            builder.addFormDataPart("", "");
+
+            for (HWOkHttpNameValuePair param : params) {
+                String key = param.getKey();
+                Object value = param.getValue();
+
+                // 단순 String 타입 추가
+                if (value instanceof String) {
+                    String newValue = (String) value;
+                    if (!TextUtils.isEmpty(newValue)) {
+                        builder.addFormDataPart(key, newValue);
+                    }
+                }
+                // File 타입 추가
+                else if (value instanceof File) {
+                    File file = (File) value;
+                    int extensionIndex = file.getName().lastIndexOf(".");
+                    String fileExtension = file.getName().substring(extensionIndex + 1);
+
+                    MediaType mediaType = MediaType.parse(HWOkHttpMimeType.getMimeType(fileExtension));
+                    builder.addFormDataPart(key, file.getName()
+                            , RequestBody.create(mediaType, file));
                 }
             }
-            // File 타입 추가
-            else if (value instanceof File) {
-                File file = (File) value;
-                int extensionIndex = file.getName().lastIndexOf(".");
-                String fileExtension = file.getName().substring(extensionIndex + 1);
 
-                MediaType mediaType = MediaType.parse(HWOkHttpMimeType.getMimeType(fileExtension));
-                builder.addFormDataPart(key, file.getName()
-                        , RequestBody.create(mediaType, file));
+        } else if (paramsType == HWOkHttpParams.TYPE_JSON) {
+            String jsonString = params.getPendingJson() != null ? params.getPendingJson().toString() : null;
+
+            if (TextUtils.isEmpty(jsonString)) {
+                JSONObject jsonObject = new JSONObject();
+                for (HWOkHttpNameValuePair param : params) {
+                    String key = param.getKey();
+                    Object value = param.getValue();
+
+                    try {
+                        jsonObject.put(key, value);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                jsonString = jsonObject.toString();
             }
+
+            body = RequestBody.create(
+                    MediaType.parse(HWOkHttpMimeType.MIME_APPLICATION_JSON),
+                    jsonString);
+        } else {
+            Log.d("HWOkHttpClient", "Does not support this params type");
         }
 
-        return builder.build();
+        return body;
     }
 
     public OkHttpClient getOkHttpClient() {
