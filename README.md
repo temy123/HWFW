@@ -11,7 +11,7 @@ Add this lines in Manifest.xml
 
 Add this line to **build.gradle** in your project
 ```
-compile 'com.naver.temy123.baseproject.base:hwfw:1.0.1-beta1'
+compile 'com.naver.temy123.baseproject.base:hwfw:1.0.1-beta23'
 ```
 
 ### Imported Libraries
