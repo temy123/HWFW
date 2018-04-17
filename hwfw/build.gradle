@@ -8,7 +8,7 @@ ext {
     url = "https://github.com/temy123/HWFW.git"
     repoName = "hwfw"
     bitnaryUrl = "https://dl.bintray.com/temy123/hwfw"
-    libraryVersionName = "1.0.1-alpha33"
+    libraryVersionName = "1.0.1-alpha34"
 //    libraryVersionName = "1.0.1-beta23"
     libraryDescription = "HW FrameWork"
     packageName = "com.naver.temy123.baseproject.base"
