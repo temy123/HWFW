@@ -1,19 +1,28 @@
 package com.naver.temy123.baseproject.base.Widgets;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.naver.temy123.baseproject.base.Interface.OnHwNetworkCallback;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * 　　　　　$ ================================== $
  * 　　　　　　　　TimeHub 이현우 2015-11-10 제작
  * 　　　　　$ ================================== $
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements OnHwNetworkCallback {
 
     /**
      * replaceFragment() 를 사용할것 [ 같은 기능 ]
@@ -121,9 +130,34 @@ public abstract class BaseFragment extends Fragment {
      * 상태 변경을 확인 할 수 있는 함수
      */
     public void onPageChanged(boolean isShow) {
+        onPageChanged(null, isShow);
+    }
+
+    /**
+     * ViewPager 안에 BaseFragment 가 포함 되어있을때<br>
+     * 상태 변경을 확인 할 수 있는 함수
+     */
+    public void onPageChanged(ViewPager viewPager, boolean isShow) {
+
     }
 
     @Nullable
     @Override
     public abstract View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
+
+    @Override
+    public void onFailed(Intent intent, IOException e) {
+
+    }
+
+    @Override
+    public void onUIResponsed(Call call, Intent intent, String body, String message, int status) {
+
+    }
+
+    @Override
+    public void onNetworkResponsed(Call call, Intent intent, Response response, String body, int status) {
+
+    }
+
 }

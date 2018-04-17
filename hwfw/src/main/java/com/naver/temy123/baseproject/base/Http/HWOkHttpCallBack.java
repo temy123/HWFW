@@ -70,9 +70,7 @@ public abstract class HWOkHttpCallBack implements Callback {
         });
     }
 
-
-    public void onFailed(Intent intent, IOException e) {
-    }
+    public abstract void onFailed(Intent intent, IOException e);
 
     /**
      * on Background Thread

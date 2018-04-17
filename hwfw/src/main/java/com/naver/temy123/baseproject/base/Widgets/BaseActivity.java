@@ -1,5 +1,6 @@
 package com.naver.temy123.baseproject.base.Widgets;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.Fragment;
@@ -9,15 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.naver.temy123.baseproject.base.Interface.OnHwNetworkCallback;
 import com.naver.temy123.baseproject.base.Interface.OnPermissionListener;
 import com.naver.temy123.baseproject.base.Utils.PermissionHelper;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by HW on 2015-08-24.
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements OnHwNetworkCallback {
 
     private OnPermissionListener onPermissionListener;
 
@@ -205,4 +211,20 @@ public class BaseActivity extends AppCompatActivity {
     public void setOnPermissionListener(OnPermissionListener onPermissionListener) {
         this.onPermissionListener = onPermissionListener;
     }
+
+    @Override
+    public void onFailed(Intent intent, IOException e) {
+
+    }
+
+    @Override
+    public void onUIResponsed(Call call, Intent intent, String body, String message, int status) {
+
+    }
+
+    @Override
+    public void onNetworkResponsed(Call call, Intent intent, Response response, String body, int status) {
+
+    }
+
 }

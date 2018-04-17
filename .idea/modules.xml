@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/HWFW.iml" filepath="$PROJECT_DIR$/HWFW.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Workspace-HWFW.iml" filepath="$PROJECT_DIR$/Workspace-HWFW.iml" />
       <module fileurl="file://$PROJECT_DIR$/android-async-http-1.4.9/android-async-http-1.4.9.iml" filepath="$PROJECT_DIR$/android-async-http-1.4.9/android-async-http-1.4.9.iml" />
       <module fileurl="file://$PROJECT_DIR$/gson-2.8.2/gson-2.8.2.iml" filepath="$PROJECT_DIR$/gson-2.8.2/gson-2.8.2.iml" />
       <module fileurl="file://$PROJECT_DIR$/httpclient-4.4.1.2/httpclient-4.4.1.2.iml" filepath="$PROJECT_DIR$/httpclient-4.4.1.2/httpclient-4.4.1.2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/hwfw/app.iml" filepath="$PROJECT_DIR$/hwfw/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hwfw/hwfw.iml" filepath="$PROJECT_DIR$/hwfw/hwfw.iml" />
       <module fileurl="file://$PROJECT_DIR$/okhttp-3.9.0/okhttp-3.9.0.iml" filepath="$PROJECT_DIR$/okhttp-3.9.0/okhttp-3.9.0.iml" />
       <module fileurl="file://$PROJECT_DIR$/okio-1.13.0/okio-1.13.0.iml" filepath="$PROJECT_DIR$/okio-1.13.0/okio-1.13.0.iml" />
+      <module fileurl="file://$PROJECT_DIR$/testapplication/testapplication.iml" filepath="$PROJECT_DIR$/testapplication/testapplication.iml" />
     </modules>
   </component>
 </project>

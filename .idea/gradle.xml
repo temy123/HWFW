@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/hwfw" />
             <option value="$PROJECT_DIR$/okhttp-3.9.0" />
             <option value="$PROJECT_DIR$/okio-1.13.0" />
+            <option value="$PROJECT_DIR$/testapplication" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

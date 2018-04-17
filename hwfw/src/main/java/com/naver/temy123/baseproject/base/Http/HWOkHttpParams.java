@@ -1,5 +1,6 @@
 package com.naver.temy123.baseproject.base.Http;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import org.json.JSONArray;
@@ -20,10 +21,11 @@ import java.util.Iterator;
 public class HWOkHttpParams implements Iterable<HWOkHttpNameValuePair> {
 
     public static final int TYPE_JSON = 1;
-    public static final int TYPE_FORM = 0;
+    public static final int TYPE_MULTIPART_FORM = 0;
+    public static final int TYPE_X_WWW_FORM_URLENCODED = 2;
 
     private ArrayList<HWOkHttpNameValuePair> params = new ArrayList();
-    private int paramsType = TYPE_FORM;
+    private int paramsType = TYPE_MULTIPART_FORM;
     private Object pendingJson; // Can put JSONArray or JSONObject type.
 
     public HWOkHttpParams() {
@@ -58,8 +60,46 @@ public class HWOkHttpParams implements Iterable<HWOkHttpNameValuePair> {
         return this;
     }
 
+    /**
+     * JSON 파라미터 전용 add 입니다
+     *
+     * @param key
+     * @param jsonParameter
+     * @return
+     */
+    public HWOkHttpParams add(String key, Object jsonParameter) {
+        HWOkHttpNameValuePair param = new HWOkHttpNameValuePair(key, jsonParameter);
+        params.add(param);
+        return this;
+    }
+
+    /**
+     * 파일 첨부
+     * <p>
+     * 파일 이름은 자동으로 선택한 파일의 이름으로 지정 됩니다
+     *
+     * @param key
+     * @param value
+     * @return
+     */
     public HWOkHttpParams add(String key, File value) {
         HWOkHttpNameValuePair param = new HWOkHttpNameValuePair(key, value);
+        params.add(param);
+        return this;
+    }
+
+    /**
+     * 파일 첨부
+     * <p>
+     * 파일 이름을 따로 지정하고 싶을 때 사용해주세요
+     *
+     * @param key
+     * @param value
+     * @param fileName
+     * @return
+     */
+    public HWOkHttpParams add(String key, File value, @NonNull String fileName) {
+        HWOkHttpNameValuePair param = new HWOkHttpNameValuePair(key, value, fileName);
         params.add(param);
         return this;
     }

@@ -8,7 +8,8 @@ ext {
     url = "https://github.com/temy123/HWFW.git"
     repoName = "hwfw"
     bitnaryUrl = "https://dl.bintray.com/temy123/hwfw"
-    libraryVersionName = "1.0.1-beta1"
+    libraryVersionName = "1.0.1-alpha33"
+//    libraryVersionName = "1.0.1-beta23"
     libraryDescription = "HW FrameWork"
     packageName = "com.naver.temy123.baseproject.base"
 }
@@ -23,7 +24,7 @@ install {
             name repoName
             description libraryDescription
             url url
-            inceptionYear '2017' // release date
+            inceptionYear '2018' // release date
 
             // gradle dependency
             // ex) compile 'tech.thdev:bintray-sample:0.0.1'
@@ -106,13 +107,13 @@ bintray {
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.0"
     defaultConfig {
 //        applicationId "com.naver.temy123.baseproject"
         minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 17070301
+        targetSdkVersion 27
+        versionCode 18031401
         versionName libraryVersionName
     }
     buildTypes {
@@ -125,16 +126,21 @@ android {
 
     productFlavors {
     }
+
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:support-v4:25.+'
-    compile 'com.android.support:appcompat-v7:25.+'
-    compile 'com.android.support:recyclerview-v7:25.+'
-    compile project(':android-async-http-1.4.9')
-    compile project(':gson-2.8.2')
-    compile project(':okhttp-3.9.0')
-    compile project(':httpclient-4.4.1.2')
-    compile project(':okio-1.13.0')
+    compile 'com.android.support:support-v4:27.+'
+    compile 'com.android.support:appcompat-v7:27.+'
+    compile 'com.android.support:recyclerview-v7:27.+'
+
+//    compile project(':gson-2.8.2')
+//    compile project(':okhttp-3.9.0')
+//    compile project(':okio-1.13.0')
+    compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
+    compile 'com.google.code.gson:gson:2.8.2'
+
+//    compile files('libs/android-async-http-1.4.9.jar')
 }

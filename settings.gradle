@@ -1,1 +1,1 @@
-include ':hwfw', ':android-async-http-1.4.9', ':gson-2.8.2', ':okhttp-3.9.0', ':httpclient-4.4.1.2', ':okio-1.13.0'
+include ':hwfw', ':gson-2.8.2', ':okhttp-3.9.0', ':okio-1.13.0', ':testapplication', ':android-async-http-1.4.9', ':httpclient-4.4.1.2'

@@ -29,12 +29,12 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
     private Context mContext;
 
     // HeaderViews, FooterViews 저장
-    private ArrayList<View> mHeaderViews ;
-    private ArrayList<View> mFooterViews ;
+    private ArrayList<View> mHeaderViews;
+    private ArrayList<View> mFooterViews;
 
-    private int mLatestPosition = 0 ;
+    private int mLatestPosition = 0;
 
-    public LayoutInflater mInflater ;
+    public LayoutInflater mInflater;
 
     public BaseRecyclerViewAdapter(Context context) {
         this.mContext = context;
@@ -48,7 +48,7 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
     }
 
     // 헤더 추가
-    public final void addHeaderView (View view) {
+    public final void addHeaderView(View view) {
         // 기본 기능을 사용하기 전에 등록함
         if (mHeaderViews == null) {
             mHeaderViews = new ArrayList<>();
@@ -59,7 +59,7 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
     }
 
     // 헤더 추가
-    public final void addHeaderView (int resId) {
+    public final void addHeaderView(int resId) {
         // 기본 기능을 사용하기 전에 등록함
         if (mHeaderViews == null) {
             mHeaderViews = new ArrayList<>();
@@ -71,7 +71,7 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
     }
 
     // 헤더 추가
-    public final void addFooterView (int resId) {
+    public final void addFooterView(int resId) {
         // 기본 기능을 사용하기 전에 등록함
         if (mFooterViews == null) {
             mFooterViews = new ArrayList<>();
@@ -83,7 +83,7 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
     }
 
     // 푸터 추가
-    public final void addFooterView (View view) {
+    public final void addFooterView(View view) {
         // 기본 기능을 사용하기 전에 등록함
         if (mFooterViews == null) {
             mFooterViews = new ArrayList<>();
@@ -97,11 +97,11 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int headerSize = getHeaderSize();
 
-        if ( viewType == TYPE_DEFAULT_LIST) {
+        if (viewType == TYPE_DEFAULT_LIST) {
             return onCreateListViewHolder(parent);
-        } else if ( headerSize > viewType ) {
+        } else if (headerSize > viewType) {
             return onCreateHeaderViewHolder(parent);
-        } else if ( headerSize + mArray.size() - 1 < viewType ) {
+        } else if (headerSize + mArray.size() - 1 < viewType) {
             return onCreateFooterViewHolder(parent);
         }
 
@@ -113,11 +113,11 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
         int headerSize = getHeaderSize();
 
         // 헤더가 있었을 경우
-        if ( getItemViewType(position) == TYPE_DEFAULT_LIST) {
+        if (getItemViewType(position) == TYPE_DEFAULT_LIST) {
             onListViewHolder(holder, position - getHeaderSize(), position);
-        } else if ( headerSize > position ) {
+        } else if (headerSize > position) {
             onHeaderViewHolder(holder, position);
-        } else if ( headerSize + mArray.size() - 1 < position ) {
+        } else if (headerSize + mArray.size() - 1 < position) {
             onFooterViewHolder(holder, position - getHeaderSize() - size(), position);
         }
     }
@@ -125,19 +125,26 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
     /*
         사용할때 필요한 부분만 구현하여 사용
      */
-    public void onHeaderViewHolder (RecyclerView.ViewHolder holder, int position) {}
-    public void onListViewHolder (RecyclerView.ViewHolder holder, int position, int realPosition) {}
-    public void onFooterViewHolder (RecyclerView.ViewHolder holder, int position, int realPosition) {}
+    public void onHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
+    }
 
-    public RecyclerView.ViewHolder onCreateHeaderViewHolder (ViewGroup parent) {
+    public void onListViewHolder(RecyclerView.ViewHolder holder, int position, int realPosition) {
+    }
+
+    public void onFooterViewHolder(RecyclerView.ViewHolder holder, int position, int realPosition) {
+    }
+
+    public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
         RecyclerView.ViewHolder holder = BaseViewHolder.newInstance(mHeaderViews.get(mLatestPosition));
         return holder;
     }
-    public RecyclerView.ViewHolder onCreateFooterViewHolder (ViewGroup parent) {
+
+    public RecyclerView.ViewHolder onCreateFooterViewHolder(ViewGroup parent) {
         RecyclerView.ViewHolder holder = BaseViewHolder.newInstance(mFooterViews.get(mLatestPosition - (getHeaderSize() + mArray.size())));
         return holder;
     }
-    public RecyclerView.ViewHolder onCreateListViewHolder (ViewGroup parent) {
+
+    public RecyclerView.ViewHolder onCreateListViewHolder(ViewGroup parent) {
         return null;
     }
 
@@ -153,17 +160,17 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
         int headerSize = getHeaderSize();
 
         // Header
-        if ( headerSize > position ) {
+        if (headerSize > position) {
             return position;
-        // Footer
-        // 구하는 공식
+            // Footer
+            // 구하는 공식
         /*
             0. Footer 가 있을때 !
             1. Data와 Header는 없으나 Footer 가 있는 경우
             2. Data와 Header 가 있고, 그 두 합을 초과하고 있는 데이터를 원할 경우
          */
-        } else if ( getFooterSize() != 0 && ( getHeaderSize() == 0 && mArray.size() == 0 && getFooterSize() != 0)
-                || headerSize + mArray.size() - 1 < position ) {
+        } else if (getFooterSize() != 0 && (getHeaderSize() == 0 && mArray.size() == 0 && getFooterSize() != 0)
+                || headerSize + mArray.size() - 1 < position) {
             int type = headerSize + mArray.size() - 1 + position;
             type = type < 0 ? 0 : type;
             return type;
@@ -173,8 +180,8 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemCount() {
-        int headerSize = getHeaderSize() ;
-        int footerSize = 0 ;
+        int headerSize = getHeaderSize();
+        int footerSize = 0;
 
         if (mFooterViews != null) {
             footerSize = mFooterViews.size();
@@ -183,21 +190,21 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
         return mArray.size() + headerSize + footerSize;
     }
 
-    public Context getContext ( ) {
+    public Context getContext() {
         return mContext;
     }
 
     // 헤더 사이즈 반환
-    public int getHeaderSize ( ) {
-        if ( mHeaderViews != null )
+    public int getHeaderSize() {
+        if (mHeaderViews != null)
             return mHeaderViews.size();
         else
             return 0;
     }
 
     // 푸터 사이즈 반환
-    public int getFooterSize ( ) {
-        if ( mFooterViews != null )
+    public int getFooterSize() {
+        if (mFooterViews != null)
             return mFooterViews.size();
         else
             return 0;
@@ -212,7 +219,7 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
         if (result) {
             notifyDataSetChanged();
         }
-        return result ;
+        return result;
     }
 
     public void add(int index, K object) {
@@ -273,6 +280,15 @@ public class BaseRecyclerViewAdapter<K> extends RecyclerView.Adapter<RecyclerVie
         K model = mArray.set(index, object);
         notifyDataSetChanged();
         return model;
+    }
+
+    public ArrayList<K> getList() {
+        return mArray;
+    }
+
+    public void setList(ArrayList newList) {
+        mArray = new ArrayList<>(newList);
+        notifyDataSetChanged();
     }
 
     public ArrayList<View> getHeaderViews() {
